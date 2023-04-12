@@ -169,6 +169,9 @@ func (b *encoderBuilder) typeEncoder(at schema.AvroType, t reflect.Type, info ty
 			if len(atypes) != 2 {
 				return errorEncoder(fmt.Errorf("unexpected item type count in union"))
 			}
+			if len(info.Entries) == 0 {
+				return nullEncoder
+			}
 			switch {
 			case info.Entries[0].Type == nil:
 				return ptrUnionEncoder{
