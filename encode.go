@@ -203,6 +203,7 @@ func (b *encoderBuilder) typeEncoder(at schema.AvroType, t reflect.Type, info ty
 			}
 			return enc.encode
 		default:
+			fmt.Printf("LIB: %#v %#v %#v", at, t, info)
 			return errorEncoder(fmt.Errorf("union type is not pointer or interface"))
 		}
 	case *schema.MapField:
