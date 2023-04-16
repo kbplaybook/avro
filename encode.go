@@ -439,6 +439,17 @@ func (ue unionEncoder) encode(e *encodeState, v reflect.Value) {
 			return
 		}
 	}
+	if reflect.ValueOf(v).Kind() == reflect.Ptr {
+		t := reflect.Indirect(reflect.ValueOf(v)).Elem().Type()
+		for i, choice := range ue.choices {
+			if choice.typ == t {
+				e.writeLong(int64(i))
+				choice.enc(e, reflect.Indirect(reflect.ValueOf(v)))
+				return
+			}
+		}
+	}
+
 	e.error(fmt.Errorf("unknown type for union %s", vt))
 }
 
